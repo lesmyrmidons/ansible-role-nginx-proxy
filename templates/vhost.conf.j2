@@ -1,0 +1,15 @@
+upstream app_{{ nginx_app }} {
+    server          {{ nginx_server }}:{{ nginx_server_listen }} fail_timeout=0;
+}
+
+server {
+    listen          80;
+    server_name     {{ nginx_domain }};
+
+    location / {
+        proxy_pass	http://app_{{ nginx_app }};
+
+        access_log  /var/log/nginx/{{ nginx_app }}.access.log;
+        error_log   /var/log/nginx/{{ nginx_app }}.error.log;
+    }
+}
